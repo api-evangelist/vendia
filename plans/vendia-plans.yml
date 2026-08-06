@@ -1,0 +1,81 @@
+generated: '2026-08-05'
+method: searched
+source: https://www.vendia.com/platform/pricing/
+docs:
+- https://docs.vendia.com/platform/free-tier-limits/
+- https://docs.vendia.com/platform/pro-tier-limits/
+currency: USD
+plans:
+- name: Free
+  price: 0
+  unit: per user per month
+  price_label: $0/user/month
+  self_service: true
+  limits:
+    users: 1
+    mcp_gateways: 1
+    regions: [us-east-1]
+    mcp_calls_per_month: 100000
+    concurrent_requests: 2
+    remote_mcp_servers: 2
+    api_connections: 2
+    s3_buckets: 3
+    operations_per_api_connection: 25
+    spec_file_size_mb: 5
+    max_file_size_gb: 5
+    workspaces_per_project: 2
+    transaction_storage_blocks: 1000
+    files: 500
+    file_size_mb: 50
+  docs: https://docs.vendia.com/platform/free-tier-limits/
+- name: Pro
+  price: 19
+  unit: per user per month
+  price_label: $19/user/month
+  minimum_seats: 5
+  self_service: true
+  limits:
+    users: 200
+    mcp_gateways: 1
+    regions: preferred region of choice
+    mcp_calls_per_month: unlimited
+    concurrent_requests_per_seat: 2
+    remote_mcp_servers: 20
+    api_connections: 20
+    s3_buckets: 30
+    operations_per_api_connection: 25
+    spec_file_size_mb: 5
+    max_file_size_gb: 5
+  docs: https://docs.vendia.com/platform/pro-tier-limits/
+- name: Enterprise
+  price: null
+  price_label: Custom pricing
+  contact: bd@vendia.com
+  self_service: false
+  features:
+  - Unlimited users
+  - Multiple MCP gateways
+  - Custom AWS regions with data-sovereignty support
+  - Custom data modeling
+  - Workflow automation
+  - SQL queries via MCP
+  - Role-based access control
+  - Event notifications
+  - Programmatic APIs
+  - Data backup and restore
+  limits:
+    projects_per_user: 50
+    change_data_event_connections_per_workspace: 10
+    transaction_size_kb: 255
+    max_file_size_gb: 5
+  docs: https://docs.vendia.com/platform/limits-and-quotas/
+plan_count: 3
+x-evidence:
+  fetched: '2026-08-05'
+  probes:
+  - url: https://www.vendia.com/platform/pricing/
+    status: 200
+  - url: https://docs.vendia.com/platform/free-tier-limits/
+    status: 200
+  - url: https://docs.vendia.com/platform/pro-tier-limits/
+    status: 200

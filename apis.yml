@@ -1,23 +1,142 @@
 aid: vendia
 name: Vendia
-description: 'Vendia is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: 'Vendia is an enterprise data platform company founded by Tim Wagner (creator
+  of AWS Lambda) and Shruthi Rao (founder of the AWS blockchain practice). Its flagship
+  product is the Vendia MCP Gateway — a managed, multi-tenant Model Context Protocol
+  server that gives AI agents governed, audited access to Amazon S3 buckets, third-party
+  REST APIs described by OpenAPI/Swagger ("API Catalogs"), and remote MCP servers behind
+  a single OAuth-protected endpoint. Underneath sits Vendia Share, a real-time distributed
+  data platform that exposes each project as an auto-generated GraphQL API over a
+  consensus-backed ledger, with fine-grained permissions, RBAC, schema evolution, file
+  and folder APIs, block/dead-letter notifications, and analytical data products
+  ingested from S3, Snowflake, Databricks, BigQuery, Cloudera, MySQL and PostgreSQL.'
 url: https://raw.githubusercontent.com/api-evangelist/vendia/refs/heads/main/apis.yml
+image: https://www.vendia.com/wp-content/uploads/2025/09/Power_genai_with_enterprise_data.webp
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
 specificationVersion: '0.20'
 created: '2026-08-05'
 modified: '2026-08-05'
 tags:
 - Company
-apis: []
+- MCP
+- Model Context Protocol
+- Artificial Intelligence
+- Data Sharing
+- Data Platform
+- GraphQL
+- Agents
+- API Gateway
+- Data Governance
+apis:
+- name: Vendia Share GraphQL API
+  description: 'Every Vendia project (Uni) is provisioned with an auto-generated GraphQL
+    API derived from its JSON Schema data model — get_X / list_XItems / list_XVersions
+    queries and add_X / create_X / put_X / update_X / remove_X mutations, plus the
+    Vendia File and Folder APIs (addVendia_File, listVendia_FileItems, getVendia_FileTask).
+    Reads carry a readMode (CACHED, NODE_COMMITTED, NODE_LEDGERED, UNI_LEDGERED) and
+    writes carry a syncMode; the @vendia_transaction directive makes multi-operation
+    mutations atomic. The endpoint is provisioned per project and requires an OAuth
+    bearer token or node API key, so the schema is not anonymously introspectable.'
+  humanURL: https://docs.vendia.com/platform/operational/scalar-data/graphql/
+  baseURL: https://api.share.vendia.com
+  tags:
+  - GraphQL
+  - Data Sharing
+  - Ledger
+  properties:
+  - type: Documentation
+    url: https://docs.vendia.com/platform/operational/overview/
+  - type: APIReference
+    url: https://docs.vendia.com/platform/operational/scalar-data/graphql/
+  - type: GettingStarted
+    url: https://docs.vendia.com/platform/operational/getting-started/
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: DomainSecurity
+  url: security/vendia-domain-security.yml
 - type: Website
-  url: https://forgeglobal.com/vendia_stock/
+  url: https://www.vendia.com/
+- type: DeveloperPortal
+  url: https://docs.vendia.com/
+- type: Documentation
+  url: https://docs.vendia.com/platform/
+- type: APIReference
+  url: https://docs.vendia.com/platform/operational/scalar-data/graphql/
+- type: GettingStarted
+  url: https://docs.vendia.com/quickstart/
+- type: Support
+  url: https://www.vendia.com/company/contact-us/
+- type: Blog
+  url: https://www.vendia.com/blog/
+- type: BlogRSS
+  url: https://www.vendia.com/feed/
+- type: GitHubOrganization
+  url: https://github.com/vendia
+- type: Pricing
+  url: https://www.vendia.com/platform/pricing/
+- type: SignUp
+  url: https://share.vendia.net/signup
+- type: Login
+  url: https://share.vendia.net
+- type: TermsOfService
+  url: https://www.vendia.com/legal/share-service-terms/
+- type: PrivacyPolicy
+  url: https://www.vendia.com/legal/privacy-policy/
+- type: Security
+  url: https://www.vendia.com/legal/security-policy/
+- type: Compliance
+  url: https://www.vendia.com/security/soc2
+- type: StatusPage
+  url: https://status.vendia.com/
+- type: SLA
+  url: https://www.vendia.com/legal/share-service-level-agreement/
+- type: LinkedIn
+  url: https://www.linkedin.com/company/vendiahq
+- type: Twitter
+  url: https://twitter.com/vendiahq
+- type: YouTube
+  url: https://www.youtube.com/@vendiahq
+- type: MCPServer
+  url: mcp/vendia-mcp.yml
+- type: LLMsTxt
+  url: llms/vendia-llms.txt
+- type: WellKnown
+  url: well-known/vendia-well-known.yml
+- type: Packages
+  url: packages/vendia-packages.yml
+- type: SDKs
+  url: packages/vendia-packages.yml
+- type: CLI
+  url: cli/vendia-cli.yml
+- type: Authentication
+  url: authentication/vendia-authentication.yml
+- type: OAuthScopes
+  url: scopes/vendia-scopes.yml
+- type: Conventions
+  url: conventions/vendia-conventions.yml
+- type: Lifecycle
+  url: lifecycle/vendia-lifecycle.yml
+- type: ChangeLog
+  url: https://www.vendia.com/releases/
+- type: ChangeLog
+  url: changelog/vendia-changelog.yml
+- type: Conformance
+  url: conformance/vendia-conformance.yml
+- type: Webhooks
+  url: asyncapi/vendia-notifications-webhooks.yml
+- type: Sandbox
+  url: sandbox/vendia-sandbox.yml
+- type: Plans
+  url: plans/vendia-plans.yml
+- type: RateLimits
+  url: rate-limits/vendia-rate-limits.yml
+x-enrichment:
+  date: '2026-08-05'
+  status: enriched
+  artifacts_added: 19
+  pass: local-v1

@@ -1,0 +1,69 @@
+generated: '2026-08-05'
+method: probed
+source: https://www.vendia.com/platform/pricing/
+note: >-
+  Vendia has no test-vs-live key separation, no magic test values, no test cards and
+  no fixture/trigger tooling — it is not a payments API. What it offers instead is a
+  genuinely free, self-service production tier plus runnable quickstarts. Recorded as
+  what it actually is; nothing invented.
+free_tier:
+  name: Free
+  price: $0/user/month
+  self_service: true
+  signup: https://share.vendia.net/signup
+  console: https://share.vendia.net
+  overview: https://docs.vendia.com/platform/free-tier-overview/
+  limits: https://docs.vendia.com/platform/free-tier-limits/
+  faq: https://docs.vendia.com/platform/free-tier-faq/
+  description: >-
+    One MCP Gateway in us-east-1, up to 100,000 MCP calls per month, 3 S3 buckets,
+    2 API Connections and 2 remote MCP servers — enough to exercise the whole MCP
+    surface without a sales conversation. Real data, not a mock environment.
+test_key_separation:
+  supported: false
+  note: No test-mode key prefix or sandbox/live mode switch is documented.
+test_values:
+  cards: []
+  accounts: []
+  identifiers: []
+  note: Not applicable — Vendia is a data/MCP platform, not a payments or comms API.
+test_clocks:
+  supported: false
+quickstarts:
+- name: Simple product catalog
+  url: https://docs.vendia.com/quickstart/simple-product-catalog/
+- name: Inventory management
+  url: https://docs.vendia.com/quickstart/inventory-management/
+- name: Shopping list (CLI)
+  url: https://docs.vendia.com/quickstart/shopping-list-cli/
+- name: Shopping list (web)
+  url: https://docs.vendia.com/quickstart/shopping-list-web/
+- name: Track and trace
+  url: https://docs.vendia.com/quickstart/track-and-trace/
+findings:
+- id: mcp-sandbox-host-broken
+  severity: notable
+  description: >-
+    The banner on www.vendia.com links a "MCP Sandbox" at https://mcp-sandbox.vendia.com/,
+    but that host presents a TLS certificate for *.netlify.app — the hostname does not
+    match, so every standards-compliant client (curl, browsers) refuses the connection.
+    Fetched with verification disabled it returns HTTP 404 with a 50-byte text/plain
+    body. The advertised sandbox is unreachable as published.
+  evidence:
+  - url: https://mcp-sandbox.vendia.com/
+    status: 0
+    error: 'SSL: no alternative certificate subject name matches target host name'
+    cert_subject: 'C=US, ST=California, L=San Francisco, O=Netlify, Inc, CN=*.netlify.app'
+  - url: https://mcp-sandbox.vendia.com/
+    status: 404
+    note: fetched with TLS verification disabled
+  checked: '2026-08-05'
+x-evidence:
+  fetched: '2026-08-05'
+  probes:
+  - url: https://share.vendia.net/signup
+    status: 200
+  - url: https://docs.vendia.com/platform/free-tier-limits/
+    status: 200
+  - url: https://www.vendia.com/platform/pricing/
+    status: 200

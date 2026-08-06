@@ -1,0 +1,110 @@
+generated: '2026-08-05'
+method: searched
+source: https://docs.vendia.com/platform/operational/scalar-data/graphql/
+note: >-
+  Vendia's primary contract is a per-project generated GraphQL API, not REST, so the
+  usual REST conventions (path versioning, RFC 9457 problem+json, Link pagination)
+  do not apply. What follows is the real cross-cutting semantics Vendia documents.
+authentication:
+  style: 'Authorization header — raw API key, or Bearer JWT'
+  artifact: authentication/vendia-authentication.yml
+  scopes: scopes/vendia-scopes.yml
+idempotency:
+  supported: false
+  header: null
+  note: >-
+    Vendia documents no idempotency key, no request de-duplication window, and no
+    exactly-once delivery guarantee. The transactions page covers atomicity via the
+    @vendia_transaction directive and serial ordering, but not idempotent retry.
+    The generated put_X mutation is an upsert/full-replacement, which is idempotent by
+    value but is not an idempotency-key contract. Recorded as absent — NO Idempotency
+    pointer is emitted in apis.yml.
+  source: https://docs.vendia.com/platform/operational/scalar-data/vendia-transactions/
+pagination:
+  style: cursor
+  request_params: [limit, nextToken]
+  response_fields: [nextToken]
+  applies_to: 'list_XItems, list_XVersions, listVendia_FileItems and other generated list queries'
+  filtering:
+    param: filter
+    description: List results can be filtered using the filter parameter.
+  ordering:
+    param: order
+    note: Depends on an index; removing the index breaks order-based list queries.
+  source: https://docs.vendia.com/platform/operational/scalar-data/graphql/
+consistency:
+  read_modes:
+  - {mode: CACHED, note: lowest latency, weakest consistency}
+  - {mode: NODE_COMMITTED}
+  - {mode: NODE_LEDGERED}
+  - {mode: UNI_LEDGERED, note: strongest consistency, highest latency}
+  write_modes:
+    param: syncMode
+    modes: [NODE_COMMITTED, NODE_LEDGERED, UNI_LEDGERED, ASYNC]
+    async_note: >-
+      ASYNC queues the mutation and returns a transaction ID the caller polls; a
+      failed consensus emits a dead-letter notification.
+  source: https://docs.vendia.com/platform/operational/scalar-data/graphql/
+transactions:
+  directive: '@vendia_transaction'
+  semantics: >-
+    All operations in a transaction are applied serially, in order, as an atomic unit.
+    If any single operation violates a constraint, all operations fail.
+  ledger_objects: [blockId, blockHash, transactionId, mutations]
+  source: https://docs.vendia.com/platform/operational/scalar-data/vendia-transactions/
+operation_naming:
+  queries:
+  - {pattern: get_X, description: 'Retrieve an item by the Vendia-generated id or a custom unique identifier; optional version parameter.'}
+  - {pattern: list_XItems, description: List items with filter and nextToken pagination.}
+  - {pattern: list_XVersions, description: List object versions with ordinal version numbers and block/transaction metadata.}
+  mutations:
+  - {pattern: add_X, description: Add to array types.}
+  - {pattern: remove_X, description: Remove from array types.}
+  - {pattern: create_X, description: Create an object.}
+  - {pattern: put_X, description: Upsert / full replacement.}
+  - {pattern: update_X, description: 'Partial update — only fields specified in the input are updated.'}
+  file_api:
+    operations: [addVendia_File, updateVendia_File, removeVendia_File, listVendia_FileItems, getVendia_File, listVendia_FileTaskItems, getVendia_FileTask]
+    source: https://docs.vendia.com/platform/files-and-folders/file-api/
+versioning:
+  style: additive-schema-evolution
+  artifact: lifecycle/vendia-lifecycle.yml
+error_envelope:
+  style: graphql-errors
+  note: >-
+    Errors surface through the standard GraphQL `errors` array. Vendia publishes no
+    error-code registry, no problem+json media type, and no numbered error catalog, so
+    no errors/ artifact was written. Dead-letter notifications carry a structured
+    reasonType (RETRYABLE | NON_RETRYABLE) and reasonText — the closest thing Vendia
+    publishes to a documented failure taxonomy.
+  source: https://docs.vendia.com/platform/integrations/vendia-notifications/
+rate_limit_signaling:
+  headers: null
+  artifact: rate-limits/vendia-rate-limits.yml
+  note: Quotas are published; no RateLimit response headers or 429 contract documented.
+request_tracing:
+  request_id_header: null
+  note: >-
+    No request-id header is documented. Asynchronous mutations return a transactionId
+    that serves as the correlation handle through the ledger and notifications.
+permissions:
+  layers:
+  - {layer: AWS IAM, scope: outer boundary for Storage Connections}
+  - {layer: Vendia Access Policies, scope: glob-pattern fine-grained control}
+  - {layer: Vendia RBAC, scope: project and workspace roles}
+  source: https://docs.vendia.com/platform/vendia-mcp-server/storage-connections/access-policies/
+cross_links:
+  authentication: authentication/vendia-authentication.yml
+  scopes: scopes/vendia-scopes.yml
+  lifecycle: lifecycle/vendia-lifecycle.yml
+  rate_limits: rate-limits/vendia-rate-limits.yml
+  webhooks: asyncapi/vendia-notifications-webhooks.yml
+x-evidence:
+  fetched: '2026-08-05'
+  probes:
+  - url: https://docs.vendia.com/platform/operational/scalar-data/graphql/
+    status: 200
+  - url: https://docs.vendia.com/platform/operational/scalar-data/vendia-transactions/
+    status: 200
+  - url: https://docs.vendia.com/platform/files-and-folders/file-api/
+    status: 200

@@ -1,0 +1,99 @@
+generated: '2026-08-05'
+method: searched
+source: https://docs.vendia.com/platform/operational/scalar-data/node-authentication/
+docs:
+- https://docs.vendia.com/platform/operational/scalar-data/node-authentication/
+- https://docs.vendia.com/platform/vendia-mcp-server/authentication/
+- https://docs.vendia.com/platform/integrations/sso-authentication/
+note: >-
+  Derived mechanically from OpenAPI securitySchemes was not possible — Vendia
+  publishes no OpenAPI. This profile is searched from the documented auth reference
+  for the GraphQL API, the MCP Gateway, and the live RFC 8414 discovery document at
+  https://auth.share.vendia.com/.well-known/oauth-authorization-server (saved
+  verbatim to well-known/vendia-oauth-authorization-server.json).
+summary:
+  types: [apiKey, http, oauth2, openIdConnect]
+  api_key_in: [header]
+  oauth2_flows: [authorizationCode, clientCredentials, refreshToken]
+  pkce: [S256]
+schemes:
+- name: NodeApiKey
+  type: apiKey
+  in: header
+  parameter: Authorization
+  format: 'Authorization: MY_API_KEY_HERE'
+  applies_to: Vendia Share GraphQL API (per node)
+  issued_via: [Vendia console, GraphQL mutation, 'share node add-api-key']
+  note: The API key is only viewable at the time of creation.
+  source: https://docs.vendia.com/platform/operational/scalar-data/node-authentication/
+- name: BearerJWT
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  parameter: Authorization
+  format: 'Authorization: Bearer MY_JWT_HERE'
+  applies_to: Vendia Share GraphQL API, Vendia MCP Gateway
+  byoidp: true
+  byoidp_config: [jwks_url, issuer, audience]
+  byoidp_providers_documented: [Okta, Auth0, AWS Cognito, Azure AD]
+  source: https://docs.vendia.com/platform/operational/scalar-data/node-authentication/
+- name: VendiaOAuth2
+  type: oauth2
+  issuer: https://auth.share.vendia.com
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://auth.share.vendia.com/authorize
+    tokenUrl: https://auth.share.vendia.com/token
+    refreshUrl: https://auth.share.vendia.com/token
+    pkce: S256
+  - flow: clientCredentials
+    tokenUrl: https://auth.share.vendia.com/token
+    note: Used for programmatic token exchange from custom applications.
+  revocation_endpoint: https://auth.share.vendia.com/revoke
+  registration_endpoint: https://auth.share.vendia.com/register
+  dynamic_client_registration: true
+  token_endpoint_auth_methods: [none, client_secret_post, client_secret_basic]
+  id_token_signing_alg: [RS256]
+  source: well-known/vendia-oauth-authorization-server.json
+- name: VendiaOIDC
+  type: openIdConnect
+  openIdConnectUrl: https://auth.share.vendia.com/.well-known/openid-configuration
+  jwks_uri: https://auth.share.vendia.com/.well-known/jwks.json
+  subject_types: [public]
+  source: well-known/vendia-openid-configuration.json
+- name: ServiceCredentialHeaders
+  type: apiKey
+  in: header
+  parameters:
+  - X-Vendia-Client-Id
+  - X-Vendia-Client-Secret
+  applies_to: Vendia MCP Gateway (Pro and Enterprise tiers)
+  description: >-
+    Simplified path for no-code/low-code tools (OpenAI Agent Builder, Zapier, Make,
+    n8n) that cannot perform an OAuth flow. The gateway performs the token exchange
+    on the caller's behalf. Vendia explicitly recommends OAuth over this method.
+  source: https://docs.vendia.com/platform/vendia-mcp-server/authentication/
+- name: WebSocketConnectionInit
+  type: apiKey
+  in: message
+  applies_to: Vendia Share GraphQL subscriptions (WebSocket)
+  formats:
+  - '{"type": "connection_init", "payload": {"apiKey": "YOUR_KEY"}}'
+  - '{"type": "connection_init", "payload": {"token": "YOUR_JWT"}}'
+  source: https://docs.vendia.com/platform/operational/scalar-data/node-authentication/
+sso:
+  supported: true
+  tiers: [Enterprise]
+  docs: https://docs.vendia.com/platform/integrations/sso-authentication/
+x-evidence:
+  fetched: '2026-08-05'
+  probes:
+  - url: https://auth.share.vendia.com/.well-known/openid-configuration
+    status: 200
+  - url: https://auth.share.vendia.com/.well-known/jwks.json
+    status: 200
+  - url: https://auth.share.vendia.com/token
+    status: 400
+    note: POST without a body returns a JSON error — endpoint is live
+  - url: https://docs.vendia.com/platform/operational/scalar-data/node-authentication/
+    status: 200

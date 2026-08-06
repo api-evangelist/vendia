@@ -1,0 +1,47 @@
+generated: '2026-08-05'
+method: searched
+source: https://www.vendia.com/releases/
+scheme: dated-release-notes
+current_version: null
+note: >-
+  Vendia publishes month-dated product release notes rather than semantically versioned
+  API releases. Entries below are the recent window as published; this is not the full
+  history. The release stream shows the company's centre of gravity moving from Vendia
+  Share data sharing to the MCP Gateway from July 2025 onward.
+entries:
+- date: 'Mar, 2026'
+  title: Security Guardrails for PII/PHI Detection & Rate Limiting
+  type: [addition, security]
+- date: 'Feb, 2026'
+  title: MCP Gateway Insights Dashboard
+  type: [addition]
+- date: 'Dec, 2025'
+  title: AI Schema Generation
+  type: [addition]
+- date: 'Nov, 2025'
+  title: Remote MCP Server Connectivity via Vendia MCP Gateway
+  type: [addition]
+- date: 'Oct, 2025'
+  title: API Catalogs — Instantly Make Your APIs AI-Ready
+  type: [addition]
+- date: 'Oct, 2025'
+  title: Fine-Grained S3 Access Policies for AI
+  type: [addition, security]
+- date: 'Sep, 2025'
+  title: 'Smarter S3: AI File Creation, Expanded Formats, and Full Traceability'
+  type: [addition]
+- date: 'Aug, 2025'
+  title: S3 for MCP, Lineage Tools, and Read Receipts
+  type: [addition]
+- date: 'Jul, 2025'
+  title: Introducing Vendia MCP Server
+  type: [addition]
+- date: 'Jun, 2025'
+  title: IceBlock & Enhanced Analytical Data Sharing
+  type: [addition]
+breaking_changes_in_window: 0
+x-evidence:
+  fetched: '2026-08-05'
+  probes:
+  - url: https://www.vendia.com/releases/
+    status: 200

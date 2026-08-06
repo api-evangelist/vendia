@@ -1,0 +1,55 @@
+generated: '2026-08-05'
+method: searched
+source: https://docs.vendia.com/platform/cli/
+docs: https://docs.vendia.com/platform/cli/commands/
+guide: https://docs.vendia.com/platform/cli/guide/
+cli:
+  name: Vendia Share CLI
+  binary: share
+  package: '@vendia/share-cli'
+  version: 0.13.0
+  install:
+  - method: npm
+    command: npm install @vendia/share-cli -g
+  help: share [command] --help
+commands:
+- name: auth
+  docs: https://docs.vendia.com/platform/cli/commands/auth/
+  description: Manage user authorization and switch between Vendia accounts.
+- name: login
+  docs: https://docs.vendia.com/platform/cli/commands/login/
+  description: Authenticate to a Vendia account.
+- name: logout
+  docs: https://docs.vendia.com/platform/cli/commands/logout/
+  description: End the current Vendia session.
+- name: uni
+  docs: https://docs.vendia.com/platform/cli/commands/uni/
+  description: Uni (project) lifecycle operations.
+  subcommands: [create, list, evolve]
+- name: node
+  docs: https://docs.vendia.com/platform/cli/commands/node/
+  description: Manage Uni nodes and their configuration, including API keys.
+  subcommands: [add-api-key]
+- name: client
+  docs: https://docs.vendia.com/platform/cli/commands/client/
+  description: Generate a local, schema-typed Vendia client and retrieve the Uni schema.
+  subcommands: [generate]
+- name: file
+  docs: https://docs.vendia.com/platform/cli/commands/file/
+  description: File operations within a Uni.
+  subcommands: [add]
+- name: org
+  docs: https://docs.vendia.com/platform/cli/commands/org/
+  description: Administer organizational settings (Enterprise tier only).
+sdk:
+  name: Vendia Client SDK
+  docs: https://docs.vendia.com/platform/cli/vendia-client-sdk/
+  package: '@vendia/client'
+  generated_by: share client generate
+x-evidence:
+  fetched: '2026-08-05'
+  probes:
+  - url: https://docs.vendia.com/platform/cli/
+    status: 200
+  - url: https://registry.npmjs.org/@vendia%2fshare-cli
+    status: 200

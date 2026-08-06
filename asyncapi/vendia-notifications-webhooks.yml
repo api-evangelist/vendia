@@ -1,0 +1,66 @@
+generated: '2026-08-05'
+method: searched
+source: https://docs.vendia.com/platform/integrations/vendia-notifications/
+spec_type: Webhooks
+asyncapi_published: false
+asyncapi_note: >-
+  Vendia publishes no AsyncAPI document. Probed for one and found none; the event
+  surface below is captured from the Vendia Notifications documentation instead, and
+  the artifact is wired as `Webhooks`, not `AsyncAPI`. Nothing here is fabricated —
+  payload fields are the ones Vendia names in its docs.
+name: Vendia Notifications
+description: >-
+  Project workspaces can be configured to emit events when a block commits to the
+  ledger and world state, or when a block fails consensus and is dead-lettered.
+events:
+- name: Block Notification
+  trigger: A block successfully commits to both the ledger and the world state.
+  payload_fields:
+  - blockId
+  - blockHash
+  - mutations
+  - 'mutations[]._id'
+  - 'mutations[]._owner'
+  - part
+  - totalParts
+  note: Large blocks are chunked across multiple deliveries using part / totalParts.
+- name: Dead-Letter Notification
+  trigger: >-
+    A block fails consensus approval and its transactions are not applied to the
+    ledger or world state. Emitted for NODE_COMMITTED and ASYNC sync modes.
+  payload_fields:
+  - transactionId
+  - mutation
+  - owner
+  - submissionTime
+  - reasonType
+  - reasonText
+  enums:
+    reasonType: [RETRYABLE, NON_RETRYABLE]
+subscriber_types:
+- HTTPS webhook
+- Email address
+- AWS Lambda function
+- Amazon SQS queue
+- Amazon Kinesis Data Firehose
+- Azure Function
+- Azure Queue Storage
+related:
+- name: Workflows and triggers
+  url: https://docs.vendia.com/platform/integrations/workflows-triggers/
+- name: Change Data Events
+  note: Enterprise tier, limited to 10 connections per workspace.
+  url: https://docs.vendia.com/platform/limits-and-quotas/
+- name: Datadog integration (limited availability)
+  url: https://docs.vendia.com/platform/limited-availability/integrations/datadog/
+consumer_library:
+  name: '@vendia/block-subscription-handler'
+  url: https://www.npmjs.com/package/@vendia/block-subscription-handler
+  description: Simplifies handling Vendia Share Block Notifications in AWS Lambda.
+x-evidence:
+  fetched: '2026-08-05'
+  probes:
+  - url: https://docs.vendia.com/platform/integrations/vendia-notifications/
+    status: 200
+  - url: https://docs.vendia.com/platform/integrations/workflows-triggers/
+    status: 200

@@ -1,0 +1,27 @@
+generated: '2026-08-05'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: www.vendia.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep 15 13:25:46 2026 GMT
+  hsts: false
+- host: docs.vendia.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep 24 09:23:44 2026 GMT
+  hsts: true
+  hsts_max_age: 31536000
+- host: api.share.vendia.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Jan 18 23:59:59 2027 GMT
+  hsts: null
+domains:
+- domain: vendia.com
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: reject

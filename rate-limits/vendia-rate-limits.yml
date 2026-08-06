@@ -1,0 +1,80 @@
+generated: '2026-08-05'
+method: searched
+source: https://docs.vendia.com/platform/limits-and-quotas/
+docs:
+- https://docs.vendia.com/platform/limits-and-quotas/
+- https://docs.vendia.com/platform/free-tier-limits/
+- https://docs.vendia.com/platform/pro-tier-limits/
+note: >-
+  Vendia publishes quota and concurrency limits but does not document RateLimit
+  response headers (RFC 9331 / X-RateLimit-*) or a 429 retry contract anywhere in its
+  public docs. Absence recorded, not inferred.
+signaling:
+  headers_documented: false
+  retry_after_documented: false
+  status_code_documented: false
+rate_limits:
+- name: MCP calls per month (Free)
+  plan: Free
+  limit_count: 100000
+  interval: month
+  scope: account
+  reset: first day of each month at midnight US/Pacific
+  note: Counted regardless of success or failure; one LLM prompt may map to several MCP calls.
+- name: MCP calls per month (Pro)
+  plan: Pro
+  limit_count: null
+  interval: month
+  unlimited: true
+- name: Concurrent MCP requests (Free)
+  plan: Free
+  limit_count: 2
+  interval: concurrent
+  scope: account
+- name: Concurrent MCP requests (Pro)
+  plan: Pro
+  limit_count: 2
+  interval: concurrent
+  scope: per seat
+quotas:
+- name: Transaction size
+  limit: 255KB
+  scope: all users
+- name: Transaction storage blocks
+  limit: 1000
+  scope: Free tier users
+- name: Files stored
+  limit: 500
+  scope: Free tier users
+- name: File size
+  limit: 50MB
+  scope: Free tier users
+- name: File size
+  limit: 5GB
+  scope: Enterprise users
+- name: Projects per user
+  limit: 50
+  scope: Enterprise users (default)
+- name: Workspaces per project
+  limit: 2
+  scope: Free tier users
+- name: Change Data Events connections per workspace
+  limit: 10
+  scope: Enterprise users
+- name: Folder path + file name length
+  limit: 1024 characters
+  scope: all users
+- name: Project name reuse after deletion
+  limit: 90 days (15 minutes for names prefixed test-)
+  scope: all users
+- name: API Connection specification file size
+  limit: 5MB
+  scope: all users
+- name: Operations per API Connection
+  limit: 25
+  scope: Free and Pro tiers
+x-evidence:
+  fetched: '2026-08-05'
+  probes:
+  - url: https://docs.vendia.com/platform/limits-and-quotas/
+    status: 200

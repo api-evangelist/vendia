@@ -1,0 +1,77 @@
+generated: '2026-08-05'
+method: searched
+source: live probes of /.well-known/* across every Vendia host in apis.yml
+notes: >-
+  The Vendia authorization server at auth.share.vendia.com publishes a real RFC 8414
+  / OpenID Connect discovery document and a JWKS. It is the OAuth authorization
+  server behind both the Vendia MCP Gateway and the Vendia Share GraphQL API.
+  IMPORTANT: share.vendia.net is a single-page-app catch-all that answers HTTP 200
+  with the same 3,965-byte HTML shell for EVERY /.well-known/* path — every probe
+  against that host was rejected as a false positive, not recorded as a hit.
+hosts:
+- host: https://auth.share.vendia.com
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 200
+    content_type: application/json
+    file: vendia-openid-configuration.json
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    content_type: application/json
+    file: vendia-oauth-authorization-server.json
+  - path: /.well-known/jwks.json
+    status: 200
+    content_type: application/json
+    file: vendia-jwks.json
+  - path: /.well-known/security.txt
+    status: 403
+  - path: /.well-known/agent-card.json
+    status: 403
+- host: https://www.vendia.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /security.txt
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://api.share.vendia.com
+  note: AWS API Gateway; every anonymous path returns {"message":"Missing Authentication Token"}
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 403
+  - path: /.well-known/oauth-protected-resource
+    status: 403
+- host: https://docs.vendia.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /robots.txt
+    status: 404
+  - path: /sitemap-0.xml
+    status: 200
+- host: https://share.vendia.net
+  note: >-
+    SPA catch-all — returned 200 text/html (3965 bytes, identical body) for all eight
+    probed /.well-known/* paths. All rejected; no well-known documents recorded here.
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    rejected: spa-catch-all-html
+  - path: /.well-known/agent-card.json
+    status: 200
+    rejected: spa-catch-all-html
+  - path: /.well-known/agent.json
+    status: 200
+    rejected: spa-catch-all-html
+summary:
+  security_txt: false
+  openid_configuration: true
+  oauth_authorization_server: true
+  api_catalog: false
+  ai_plugin: false
+  agent_card: false

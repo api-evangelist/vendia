@@ -1,0 +1,72 @@
+generated: '2026-08-05'
+method: searched
+source: https://www.vendia.com/legal/share-service-level-agreement/
+versioning:
+  scheme: additive-schema-evolution
+  docs: https://docs.vendia.com/platform/operational/modeling/schema-evolution/
+  description: >-
+    Vendia does not version its GraphQL API by URI path, header or date. The API is
+    generated from each project's JSON Schema data model, so evolution happens at the
+    schema level and is constrained to additive/non-breaking change: new types, new
+    properties on existing types, and new enum values are allowed; removing types or
+    properties, changing a property type, and changing the required flag are not.
+    Vendia states "any changes introduced via schema evolution will never break
+    existing applications in production."
+  api_connection_versioning:
+    description: >-
+      API Catalog entries carry an optional version override in numeric semantic
+      versioning form (for example 1.0.0, 2.1.3, 3.0.0).
+    source: https://docs.vendia.com/platform/vendia-mcp-server/api-connections/
+breaking_changes:
+  policy: opt-in-only
+  documented_exception:
+    change: INDEX_REMOVED
+    description: >-
+      Removing an index is the one change Vendia classifies as potentially breaking.
+      It requires explicit confirmation in the UI or the CLI flag
+      --allowed-breaking-change=INDEX_REMOVED, and can break list queries using the
+      order argument.
+    source: https://docs.vendia.com/platform/operational/modeling/schema-evolution/
+deprecation:
+  policy_url: null
+  sunset_header: null
+  notice_period: null
+  note: >-
+    No API deprecation policy, sunset/end-of-life notice period, or RFC 8594
+    Sunset/Deprecation header support was found in Vendia's docs, SLA, or service
+    terms. Recorded as absent, not inferred. No `Deprecation` pointer is emitted.
+sla:
+  url: https://www.vendia.com/legal/share-service-level-agreement/
+  tiers:
+  - plan: Enterprise
+    uptime_target: '99.9%'
+  - plan: Individual
+    uptime_target: '99%'
+  - plan: Free
+    uptime_target: null
+    note: No SLA provided for the Free plan.
+  service_credits: >-
+    5% of monthly service fees credited per consecutive 30-minute-or-longer downtime
+    period once downtime exceeds one hour, maximum one credit accruing per day, capped
+    at one week of service fees in any calendar month, non-redeemable for cash.
+status_page:
+  url: https://status.vendia.com/
+  title: Vendia Share Status
+  engine: Atlassian Statuspage
+  status: 200
+service_terms: https://www.vendia.com/legal/share-service-terms/
+security_policy: https://www.vendia.com/legal/security-policy/
+changelog: changelog/vendia-changelog.yml
+deprecated_operations: []
+x-evidence:
+  fetched: '2026-08-05'
+  probes:
+  - url: https://status.vendia.com/
+    status: 200
+  - url: https://www.vendia.com/legal/share-service-level-agreement/
+    status: 200
+  - url: https://docs.vendia.com/platform/operational/modeling/schema-evolution/
+    status: 200
+  - url: https://status.vendia.net/
+    status: 0
+    note: DNS does not resolve

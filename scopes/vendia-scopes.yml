@@ -1,0 +1,65 @@
+generated: '2026-08-05'
+method: searched
+source: https://auth.share.vendia.com/.well-known/oauth-authorization-server
+docs: https://docs.vendia.com/platform/operational/secure-data-sharing/rbac/
+note: >-
+  Vendia's OAuth authorization server advertises only the three standard OIDC scopes.
+  Authorization for data access is NOT carried in OAuth scopes — it is carried in
+  Vendia's own RBAC permission model, which is bound to the credential's assigned role
+  and evaluated per project and workspace. Both layers are recorded here because an
+  agent integrating with the MCP Gateway must satisfy the permission layer, not the
+  scope layer. Only permissions Vendia names explicitly in its public docs are listed.
+schemes:
+- name: VendiaOAuth2
+  source: well-known/vendia-oauth-authorization-server.json
+  issuer: https://auth.share.vendia.com
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://auth.share.vendia.com/authorize
+    tokenUrl: https://auth.share.vendia.com/token
+  - flow: clientCredentials
+    tokenUrl: https://auth.share.vendia.com/token
+scopes:
+- scope: openid
+  description: Standard OpenID Connect scope; requests an ID token.
+  flows: [authorizationCode]
+  sources: [well-known/vendia-oauth-authorization-server.json]
+- scope: profile
+  description: Standard OIDC claim set for the authenticated user's profile.
+  flows: [authorizationCode]
+  sources: [well-known/vendia-oauth-authorization-server.json]
+- scope: email
+  description: Standard OIDC claim set for the authenticated user's email address.
+  flows: [authorizationCode]
+  sources: [well-known/vendia-oauth-authorization-server.json]
+permissions:
+  model: role-based-access-control
+  bound_to: [project, workspace]
+  docs: https://docs.vendia.com/platform/operational/secure-data-sharing/rbac/
+  named_in_docs:
+  - permission: DATA_READ
+    description: >-
+      Required on a credential for MCP Gateway access to the project and workspace the
+      MCP server is attached to.
+    source: https://docs.vendia.com/platform/vendia-mcp-server/authentication/
+access_policy_actions:
+  model: >-
+    Storage Connections apply a second, Vendia-level access-policy layer on top of AWS
+    IAM. Both layers must allow an operation for it to succeed.
+  docs: https://docs.vendia.com/platform/vendia-mcp-server/storage-connections/access-policies/
+  actions:
+  - action: FILE_READ
+    description: Read/list files matching the policy's glob patterns.
+  - action: FILE_CREATE
+    description: Create new files; explicitly does NOT permit overwriting existing files.
+  - action: FILE_WRITE
+    description: Overwrite existing files; explicitly does NOT permit creating new ones.
+  - action: FILE_DELETE
+    description: Delete files matching the policy's glob patterns.
+x-evidence:
+  fetched: '2026-08-05'
+  probes:
+  - url: https://auth.share.vendia.com/.well-known/oauth-authorization-server
+    status: 200
+  - url: https://docs.vendia.com/platform/vendia-mcp-server/storage-connections/mcp-tools/
+    status: 200
