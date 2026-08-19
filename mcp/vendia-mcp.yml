@@ -8,15 +8,13 @@ server:
   docs: https://docs.vendia.com/platform/vendia-mcp-server/overview/
   transport: http
   url: null
-  url_note: >-
-    Vendia does not publish a single shared MCP endpoint. Each tenant is provisioned
-    its own MCP Gateway URL: Free and Pro tier users find it on the console getting
-    started page; Enterprise tier users find it under Project Settings -> Resources
-    in the project dashboard. Because the URL is per-project, tools/list could not be
-    called anonymously and the live inputSchema set is not publicly observable.
+  url_note: 'Vendia does not publish a single shared MCP endpoint. Each tenant is provisioned its own
+    MCP Gateway URL: Free and Pro tier users find it on the console getting started page; Enterprise tier
+    users find it under Project Settings -> Resources in the project dashboard. Because the URL is per-project,
+    tools/list could not be called anonymously and the live inputSchema set is not publicly observable.'
   legacy_proxy:
     method: mcp-remote
-    config: 'npx -y mcp-remote YOUR_MCP_SERVER_URL'
+    config: npx -y mcp-remote YOUR_MCP_SERVER_URL
     source: https://docs.vendia.com/platform/vendia-mcp-server/advanced-connection-methods/
 authentication:
   authorization_server: https://auth.share.vendia.com
@@ -25,36 +23,35 @@ authentication:
   - id: oauth
     name: OAuth Flow
     default: true
-    description: >-
-      Interactive OAuth 2.0 authorization-code flow with PKCE (S256). The documented
-      path for Claude Desktop/Web custom connectors, ChatGPT connectors and Mistral
-      Le Chat. Vendia states it "fully supports the MCP authorization specification".
+    description: Interactive OAuth 2.0 authorization-code flow with PKCE (S256). The documented path for
+      Claude Desktop/Web custom connectors, ChatGPT connectors and Mistral Le Chat. Vendia states it "fully
+      supports the MCP authorization specification".
   - id: service-credentials
     name: Service Credentials via Headers
-    tiers: [Pro, Enterprise]
+    tiers:
+    - Pro
+    - Enterprise
     headers:
     - X-Vendia-Client-Id
     - X-Vendia-Client-Secret
-    description: >-
-      For no-code/low-code tools (OpenAI Agent Builder, Zapier, Make, n8n) that cannot
-      perform an OAuth flow. The gateway exchanges the credentials for a JWT itself.
+    description: For no-code/low-code tools (OpenAI Agent Builder, Zapier, Make, n8n) that cannot perform
+      an OAuth flow. The gateway exchanges the credentials for a JWT itself.
   - id: token-exchange
     name: Programmatic Token Exchange
-    tiers: [Pro, Enterprise]
+    tiers:
+    - Pro
+    - Enterprise
     token_endpoint: https://auth.share.vendia.com/token
     grant_type: client_credentials
-    description: >-
-      Custom applications POST client_credentials to the token endpoint and send the
-      resulting JWT as an Authorization Bearer header on MCP requests.
+    description: Custom applications POST client_credentials to the token endpoint and send the resulting
+      JWT as an Authorization Bearer header on MCP requests.
   required_permission: DATA_READ
 tools:
-  note: >-
-    Only the Storage Connections tool family is enumerated by name in Vendia's public
-    docs. API Catalog tools are generated dynamically from each customer's uploaded
-    OpenAPI/Swagger specification, and remote-MCP-server tools are proxied through
-    from the connected upstream server, so neither family has a fixed published name
-    list. Input schemas are not published; they require authenticated tools/list
-    against a provisioned gateway URL.
+  note: Only the Storage Connections tool family is enumerated by name in Vendia's public docs. API Catalog
+    tools are generated dynamically from each customer's uploaded OpenAPI/Swagger specification, and remote-MCP-server
+    tools are proxied through from the connected upstream server, so neither family has a fixed published
+    name list. Input schemas are not published; they require authenticated tools/list against a provisioned
+    gateway URL.
   families:
   - name: storage-connections
     source: https://docs.vendia.com/platform/vendia-mcp-server/storage-connections/mcp-tools/
@@ -65,34 +62,41 @@ tools:
       access_policy_actions: []
     - name: list-storage-connection-contents
       description: Browse folder structure and list files in connected S3 buckets.
-      iam_permissions: [s3:ListBucket]
-      access_policy_actions: [FILE_READ]
+      iam_permissions:
+      - s3:ListBucket
+      access_policy_actions:
+      - FILE_READ
     - name: read-storage-connection-file
       description: Read content from supported file types in connected S3 buckets.
-      iam_permissions: [s3:GetObject]
-      access_policy_actions: [FILE_READ]
+      iam_permissions:
+      - s3:GetObject
+      access_policy_actions:
+      - FILE_READ
     - name: write-storage-connection-file
       description: Create new files or overwrite existing files in connected S3 buckets.
-      iam_permissions: [s3:PutObject]
-      access_policy_actions: [FILE_CREATE, FILE_WRITE]
+      iam_permissions:
+      - s3:PutObject
+      access_policy_actions:
+      - FILE_CREATE
+      - FILE_WRITE
     - name: delete-storage-connection-file
       description: Delete files from connected S3 buckets.
-      iam_permissions: [s3:DeleteObject]
-      access_policy_actions: [FILE_DELETE]
+      iam_permissions:
+      - s3:DeleteObject
+      access_policy_actions:
+      - FILE_DELETE
   - name: api-catalogs
     source: https://docs.vendia.com/platform/vendia-mcp-server/api-connections/
     dynamic: true
-    description: >-
-      Customers upload an OpenAPI 3.x or Swagger 2.0 document (JSON/YAML, max 5MB,
-      max 25 operations per connection on the Free tier) and the gateway exposes its
-      operations to agents as tools, with optional base-URL override, version override
-      and custom auth headers. Tool names derive from the uploaded specification.
+    description: Customers upload an OpenAPI 3.x or Swagger 2.0 document (JSON/YAML, max 5MB, max 25 operations
+      per connection on the Free tier) and the gateway exposes its operations to agents as tools, with
+      optional base-URL override, version override and custom auth headers. Tool names derive from the
+      uploaded specification.
   - name: remote-mcp-servers
     source: https://docs.vendia.com/platform/vendia-mcp-server/mcp-gateway/connecting-mcp-servers/
     dynamic: true
-    description: >-
-      Third-party remote MCP servers are federated behind the Vendia gateway; their
-      tools are proxied through with Vendia's RBAC and audit logging applied.
+    description: Third-party remote MCP servers are federated behind the Vendia gateway; their tools are
+      proxied through with Vendia's RBAC and audit logging applied.
 x-evidence:
   fetched: '2026-08-05'
   probes:
@@ -109,3 +113,10 @@ x-evidence:
   - url: https://mcp.share.vendia.com/
     status: 0
     note: DNS does not resolve — no shared/public gateway hostname
+deployment:
+  mode: remote
+  endpoint: https://www.vendia.com/platform/mcp-gateway/
+  verified: probed
+  probe: not-mcp
+  checked: '2026-08-12'
+  source: catalog MCP census
