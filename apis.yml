@@ -14,7 +14,7 @@ url: https://raw.githubusercontent.com/api-evangelist/vendia/refs/heads/main/api
 image: https://www.vendia.com/wp-content/uploads/2025/09/Power_genai_with_enterprise_data.webp
 x-type: company
 x-source: harvest:secondary-market
-specificationVersion: '0.20'
+specificationVersion: '0.23'
 created: '2026-08-05'
 modified: '2026-08-05'
 tags:
