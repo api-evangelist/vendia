@@ -11,6 +11,17 @@ description: 'Vendia is an enterprise data platform company founded by Tim Wagne
   and folder APIs, block/dead-letter notifications, and analytical data products
   ingested from S3, Snowflake, Databricks, BigQuery, Cloudera, MySQL and PostgreSQL.'
 url: https://raw.githubusercontent.com/api-evangelist/vendia/refs/heads/main/apis.yml
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://www.vendia.com/wp-content/uploads/2025/09/Power_genai_with_enterprise_data.webp
 x-type: company
 x-source: harvest:secondary-market
