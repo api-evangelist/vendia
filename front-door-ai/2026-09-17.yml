@@ -1,0 +1,33 @@
+# Front Door AI Index — vendia — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: vendia
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: www.vendia.com
+  final_host: www.vendia.com
+  ownership: own
+  owner: vendia
+  shares_host_with: null
+  inherited_from: null
+  verdict: scored
+  score: 72
+  host_score: 72
+  density: 65.04
+  words: 1107
+  tiers:
+    agentic: 32
+    core: 40
+    model: 0
+  ambiguous: 13
+  top_terms:
+    AI: 34
+    MCP: 26
+    agent: 10
+    AI agent: 5
+    gen ai: 5
+    intelligence: 2
+    agentic: 1
+    automation: 1
+    generative ai: 1
